@@ -18,11 +18,12 @@
   --line: #d9e0de;
   --accent: #0b6e5b;
   --accent-soft: #e2f0ec;
-  --code-bg: #142027;
+  --code-bg: #0a1a1c;
   --code-fg: #e4ece9;
   --code-key: #8fd3c0;
   --band-a: #1a7f5a; --band-b: #4c9a52; --band-c: #8fae45; --band-d: #c9a93a;
   --band-e: #d98a35; --band-f: #d0613a; --band-g: #b23a3a;
+  --hero-bg: #0e2a2b; --hero-fg: #f1f6f4; --hero-muted: #a5bcb6; --hero-accent: #6fdcbd; --hero-line: #2a4a4b;
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
@@ -30,10 +31,12 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0f1619; --surface: #162126; --ink: #e6eeeb; --muted: #9aaba7; --line: #26363c;
   --accent: #5cc9ac; --accent-soft: #173a33; --code-bg: #0a1013; --code-fg: #dfe9e5; --code-key: #7fd6bd;
+  --hero-bg: #0b2224; --hero-line: #24403f;
   color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0f1619; --surface: #162126; --ink: #e6eeeb; --muted: #9aaba7; --line: #26363c;
   --accent: #5cc9ac; --accent-soft: #173a33; --code-bg: #0a1013; --code-fg: #dfe9e5; --code-key: #7fd6bd;
+  --hero-bg: #0b2224; --hero-line: #24403f;
   color-scheme: dark }
 
 * { box-sizing: border-box }
@@ -60,21 +63,39 @@ p { margin: 0 }
 .bands span:nth-child(5){background:var(--band-e)} .bands span:nth-child(6){background:var(--band-f)}
 .bands span:nth-child(7){background:var(--band-g)}
 
-/* hero */
-.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 56px 64px }
-.hero h1 { font-size: clamp(2.4rem, 5.5vw, 3.9rem); font-weight: 800; letter-spacing: -.025em; margin-block: 14px 20px }
-.hero h1 em { font-style: normal; color: var(--accent) }
-.hero .lede { font-size: 1.12rem; color: var(--muted); max-width: 34em }
-.hero .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 24px; font-size: .92rem }
-.hero .meta span::before { content: "·"; margin-right: 8px; color: var(--accent) }
-.hero .meta span:first-child::before { content: none }
+/* hero: the one dark, loud band of the page */
+.hero-band { background: var(--hero-bg); color: var(--hero-fg) }
+.hero-band .label { color: var(--hero-muted) }
+.hero-band .top nav a { color: var(--hero-fg) }
+.hero-band .top nav a:hover { color: var(--hero-accent) }
+.hero-band a:focus-visible { outline-color: var(--hero-accent) }
+.top .mark { display: grid; place-items: center; width: 40px; height: 40px; border: 2px solid var(--hero-accent); border-radius: 50%; font-size: .95rem; color: var(--hero-accent) }
+.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 56px; align-items: end; padding-block: 40px 72px }
+.name { font-size: clamp(4.2rem, 13vw, 9.5rem); font-weight: 800; line-height: .86; letter-spacing: -.045em; margin-block: 18px 26px; color: var(--hero-fg) }
+.thesis { font: 600 clamp(1.35rem, 2.6vw, 1.85rem)/1.2 var(--f-display); letter-spacing: -.01em; max-width: 20em; text-wrap: balance }
+.thesis em { font-style: normal; color: var(--hero-accent) }
+.lede { margin-top: 16px; color: var(--hero-muted); max-width: 36em }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px }
+.meta span { font: 500 .78rem var(--f-mono); padding: 5px 10px; border: 1px solid var(--hero-line); border-radius: 999px; color: var(--hero-fg) }
 
-.scorecard { background: var(--code-bg); color: var(--code-fg); border-radius: 10px; padding: 18px 20px 20px; font: 400 .84rem/1.6 var(--f-mono); min-width: 0; overflow-x: auto }
-.scorecard .req { color: #8c9b97; margin-bottom: 10px; white-space: nowrap }
-.scorecard pre { margin: 0; font: inherit; white-space: pre }
-.scorecard .k { color: var(--code-key) }
-.scorecard .b { display: inline-block; padding: 0 6px; border-radius: 3px; background: var(--band-b); color: #fff; font-weight: 500 }
-.scorecard .cap { margin-top: 14px; padding-top: 12px; border-top: 1px solid #2a3a40; color: #8c9b97; font-family: var(--f-body); font-size: .8rem; white-space: normal }
+.pricer { background: var(--code-bg); border: 1px solid var(--hero-line); border-radius: 12px; padding: 20px; display: grid; gap: 12px; min-width: 0; color: var(--code-fg) }
+.pricer-head { display: flex; justify-content: space-between; align-items: center }
+.pricer-band { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 8px; font: 800 1.8rem var(--f-display); color: #fff; background: var(--band-b); transition: background-color .2s }
+.pricer-q { font-size: .9rem; color: var(--hero-muted) }
+.track { display: grid; grid-template-columns: repeat(7, 1fr); border-radius: 4px; overflow: hidden; font: 600 .72rem var(--f-mono); color: #fff; text-align: center; margin-bottom: -6px }
+.track span { padding: 3px 0 }
+.track span:nth-child(1){background:var(--band-a)} .track span:nth-child(2){background:var(--band-b)}
+.track span:nth-child(3){background:var(--band-c)} .track span:nth-child(4){background:var(--band-d)}
+.track span:nth-child(5){background:var(--band-e)} .track span:nth-child(6){background:var(--band-f)}
+.track span:nth-child(7){background:var(--band-g)}
+#pd { width: 100%; margin: 0; accent-color: var(--hero-accent); cursor: pointer; height: 28px }
+#pd:focus-visible { outline: 2px solid var(--hero-accent); outline-offset: 2px }
+.req { font: 400 .8rem var(--f-mono); color: var(--hero-muted) }
+#p-status { color: var(--hero-accent) }
+#p-json { margin: 0; font: 400 .84rem/1.6 var(--f-mono); white-space: pre; overflow-x: auto; min-height: 7.4em }
+#p-json .k { color: var(--code-key) }
+#p-json .no { color: #f19a8f }
+.cap { font-size: .8rem; color: var(--hero-muted); line-height: 1.5; padding-top: 10px; border-top: 1px solid var(--hero-line) }
 
 /* sections */
 section { padding-block: 64px; border-top: 1px solid var(--line) }
@@ -112,6 +133,8 @@ th { font: 500 .72rem var(--f-mono); letter-spacing: .07em; text-transform: uppe
 td.r, th.r { text-align: right; font-variant-numeric: tabular-nums }
 .chip { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 4px; color: #fff; font: 600 .85rem var(--f-mono) }
 tr.declined td { color: var(--muted) }
+tbody tr { transition: background-color .15s }
+tbody tr:hover, tbody tr.on { background: var(--accent-soft) }
 
 .decisions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 32px; margin-block: 8px 36px }
 .decision { display: grid; gap: 6px; padding-left: 16px; border-left: 2px solid var(--line); min-width: 0 }
@@ -146,7 +169,7 @@ footer h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); margin-bottom: 12px }
 footer p { color: var(--muted); max-width: 40em; margin-bottom: 24px }
 
 @media (max-width: 860px) {
-  .hero { grid-template-columns: 1fr; gap: 36px; padding-block: 40px 48px }
+  .hero { grid-template-columns: 1fr; gap: 40px; padding-block: 24px 48px }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px }
   .figs, .decisions, .next { grid-template-columns: 1fr }
@@ -171,38 +194,43 @@ footer p { color: var(--muted); max-width: 40em; margin-bottom: 24px }
 
 <div class="bands" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
-<div class="wrap">
-  <header class="top">
-    <div class="mark">Ann Wahu</div>
-    <nav aria-label="Sections">
-      <a href="#work">Work</a>
-      <a href="#experience">Experience</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<div class="hero-band">
+  <div class="wrap">
+    <header class="top">
+      <div class="mark">AW</div>
+      <nav aria-label="Sections">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+        <a href="https://www.linkedin.com/in/ann-wahu/">LinkedIn</a>
+      </nav>
+    </header>
 
-  <div class="hero">
-    <div>
-      <div class="label">Data Scientist · Senior Data Analyst · Nairobi</div>
-      <h1>I turn lending data into <em>decisions a business can price</em>.</h1>
-      <p class="lede">Applied statistician working on pricing and data at Bosch Kenya, with four years of BI and analytics before that. I build models end to end: from SQL features to a tested API, with the reasons, fairness checks and money impact a credit committee will ask about.</p>
-      <div class="meta">
-        <span>Fintech and credit risk</span>
-        <span>Pricing analytics</span>
-        <span>Open to roles in Kenya, remote and Germany</span>
+    <div class="hero">
+      <div class="hero-text">
+        <div class="label">Data Scientist · Senior Data Analyst · Nairobi</div>
+        <h1 class="name">Ann<br>Wahu</h1>
+        <p class="thesis">I turn raw data into decisions a business can act on, <em>and show what they are worth.</em></p>
+        <p class="lede">Applied statistician working on pricing and data at Bosch Kenya, with four years of BI and analytics before that. I build models end to end, from SQL features to a tested API, with the reasons, fairness checks and money impact a credit committee will ask about.</p>
+        <div class="meta">
+          <span>Fintech and credit risk</span>
+          <span>Pricing analytics</span>
+          <span>Open to Kenya, remote and Germany</span>
+        </div>
       </div>
-    </div>
 
-    <div class="scorecard" aria-label="Example response from the credit scoring API">
-      <div class="req">POST /score &nbsp;→&nbsp; 200 OK</div>
-<pre>{
-  <span class="k">"pd"</span>: 0.031,
-  <span class="k">"risk_band"</span>: <span class="b">"B"</span>,
-  <span class="k">"decision"</span>: "approve",
-  <span class="k">"interest_rate"</span>: 0.1726,
-  <span class="k">"reasons"</span>: []
-}</pre>
-      <div class="cap">A typical applicant scored by my credit risk API: approved in band B at 17.26%. No reasons are returned because nothing about them is unusual.</div>
+      <div class="pricer" aria-labelledby="pricer-title">
+        <div class="pricer-head">
+          <span id="pricer-title" class="label">Try my price grid</span>
+          <span class="pricer-band" id="p-band">B</span>
+        </div>
+        <label class="pricer-q" for="pd">Drag to set an applicant's probability of default</label>
+        <div class="track" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span></div>
+        <input type="range" id="pd" min="0" max="700" step="1" value="150" aria-describedby="p-json">
+        <div class="req">POST /score &nbsp;→&nbsp; <span id="p-status">200 OK</span></div>
+<pre id="p-json" aria-live="polite"></pre>
+        <p class="cap">Rates come from the project's real price grid, checked on 30,752 unseen applicants. The live API also returns the top three reasons for each decision.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -245,7 +273,7 @@ footer p { color: var(--muted); max-width: 40em; margin-bottom: 24px }
     <div class="grid-table">
       <table>
         <thead><tr><th>Band</th><th class="r">Upper PD</th><th class="r">Interest rate</th><th class="r">Loans</th><th class="r">Realised margin</th><th>Note</th></tr></thead>
-        <tbody>
+        <tbody id="grid-body">
           <tr><td><span class="chip" style="background:var(--band-a)">A</span></td><td class="r">2.5%</td><td class="r">16.0%</td><td class="r">7,636</td><td class="r">≈ 3.0%</td><td>On target</td></tr>
           <tr><td><span class="chip" style="background:var(--band-b)">B</span></td><td class="r">5%</td><td class="r">17.3%</td><td class="r">7,982</td><td class="r">≈ 3.0%</td><td>On target</td></tr>
           <tr><td><span class="chip" style="background:var(--band-c)">C</span></td><td class="r">8%</td><td class="r">19.1%</td><td class="r">5,282</td><td class="r">≈ 3.0%</td><td>On target</td></tr>
@@ -259,19 +287,19 @@ footer p { color: var(--muted); max-width: 40em; margin-bottom: 24px }
 
     <div class="figs">
       <figure>
-        <img src="img/band_margins.png" alt="Bar chart of realised margin by risk band A to F against the 3% target; band D is lower at 2.2%" width="1050" height="675" loading="lazy">
+        <img src="img/band_margins.png" alt="Bar chart of realised margin by risk band A to F against the 3% target; band D is lower at 2.2%" width="1050" height="675" decoding="async">
         <figcaption>Every approved band lands near its 3% target margin on unseen applicants, except D, which is flagged for monitoring.</figcaption>
       </figure>
       <figure>
-        <img src="img/example_decline.png" alt="SHAP chart explaining why one applicant was declined at 37.2% probability of default; low external credit scores are the main drivers" width="1125" height="675" loading="lazy">
+        <img src="img/example_decline.png" alt="SHAP chart explaining why one applicant was declined at 37.2% probability of default; low external credit scores are the main drivers" width="1125" height="675" decoding="async">
         <figcaption>Why one applicant was declined. Every decision returns its top three reasons in plain language.</figcaption>
       </figure>
       <figure>
-        <img src="img/fairness.png" alt="Fairness audit charts by gender and age group" width="1350" height="675" loading="lazy">
+        <img src="img/fairness.png" alt="Fairness audit charts by gender and age group" width="1350" height="675" decoding="async">
         <figcaption>All gender and age groups pass the four-fifths rule on approval. Small calibration gaps are documented and monitored, never corrected with protected attributes.</figcaption>
       </figure>
       <figure>
-        <img src="img/psi_simulation.png" alt="Population Stability Index for a normal month and a simulated downturn" width="1200" height="877" loading="lazy">
+        <img src="img/psi_simulation.png" alt="Population Stability Index for a normal month and a simulated downturn" width="1200" height="877" decoding="async">
         <figcaption>Drift monitoring: a normal month stays stable (PSI about 0.001); a simulated downturn sets off alerts on the external credit scores before the score itself crosses the alert line.</figcaption>
       </figure>
     </div>
@@ -330,10 +358,46 @@ footer p { color: var(--muted); max-width: 40em; margin-bottom: 24px }
     <h2>Let's talk</h2>
     <p>I'm looking for Senior Data Analyst and Data Scientist roles, fintech first, in Kenya, remote or in Germany.</p>
     <div class="links">
-      <a class="btn primary" href="https://github.com/wahu-dev">GitHub · wahu-dev</a>
+      <a class="btn primary" href="mailto:stacyannewahu@gmail.com">stacyannewahu@gmail.com</a>
+      <a class="btn" href="https://www.linkedin.com/in/ann-wahu/">LinkedIn · ann-wahu</a>
+      <a class="btn" href="https://github.com/wahu-dev">GitHub · wahu-dev</a>
     </div>
   </div>
 </footer>
+
+<script>
+(function () {
+  var grid = [
+    { b: "A", lo: 0.000, hi: 0.025, rate: 0.160, c: "--band-a" },
+    { b: "B", lo: 0.025, hi: 0.050, rate: 0.173, c: "--band-b" },
+    { b: "C", lo: 0.050, hi: 0.080, rate: 0.191, c: "--band-c" },
+    { b: "D", lo: 0.080, hi: 0.120, rate: 0.215, c: "--band-d" },
+    { b: "E", lo: 0.120, hi: 0.200, rate: 0.259, c: "--band-e" },
+    { b: "F", lo: 0.200, hi: 0.300, rate: 0.341, c: "--band-f" },
+    { b: "G", lo: 0.300, hi: 0.600, rate: null,  c: "--band-g" }
+  ];
+  var slider = document.getElementById("pd"), out = document.getElementById("p-json"),
+      chip = document.getElementById("p-band"), rows = document.querySelectorAll("#grid-body tr");
+  function k(s) { return '<span class="k">"' + s + '"</span>'; }
+  function render() {
+    var v = +slider.value, i = Math.min(6, Math.floor(v / 100)), g = grid[i];
+    var pd = g.lo + (g.hi - g.lo) * ((v - i * 100) / 100);
+    if (pd < 0.003) pd = 0.003;
+    var approve = g.rate !== null;
+    chip.textContent = g.b;
+    chip.style.background = "var(" + g.c + ")";
+    out.innerHTML = "{\n  " + k("pd") + ": " + pd.toFixed(3) + ",\n  " +
+      k("risk_band") + ': "' + g.b + '",\n  ' +
+      k("decision") + ": " + (approve ? '"approve"' : '<span class="no">"decline"</span>') + ",\n  " +
+      k("interest_rate") + ": " + (approve ? g.rate.toFixed(3) : "null") + ",\n  " +
+      k("expected_loss_per_100k") + ": " + Math.round(pd * 0.45 * 100000).toLocaleString("en-US") + "\n}";
+    slider.setAttribute("aria-valuetext", "Probability of default " + (pd * 100).toFixed(1) + "%, band " + g.b + ", " + (approve ? "approve at " + (g.rate * 100).toFixed(1) + "%" : "decline"));
+    rows.forEach(function (r, j) { r.classList.toggle("on", j === i); });
+  }
+  slider.addEventListener("input", render);
+  render();
+})();
+</script>
 
 </body>
 </html>
